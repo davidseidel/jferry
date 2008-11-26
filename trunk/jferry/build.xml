@@ -1,0 +1,75 @@
+<project name="jferry" basedir="." default="all">
+
+	<!-- PROPERTIES -->
+	<property file="build.properties" />
+	<property file="version.properties" />
+	<property environment="env" />
+	
+	<path id="classpath">
+		<fileset dir="${directories.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- TARGETs -->
+	<target name="clean">
+		<delete dir="${directories.out}" />
+	</target>
+
+	<target name="init">
+		<mkdir dir="${directories.out}" />
+		<mkdir dir="${directories.out.dist}" />
+		<mkdir dir="${directories.out.jar}" />
+		<mkdir dir="${directories.out.jar.meta-inf}" />
+		<mkdir dir="${directories.out.tmp}" />
+		<mkdir dir="${directories.out.tmp.classes}" />
+		<mkdir dir="${directories.out.tmp.classes-test}" />			
+		<mkdir dir="${directories.out.javadoc}" />
+	</target>
+
+	<target name="manifest">
+		<manifest file="${files.out.manifest}">
+			<attribute name="Built-By" value="${user.name}" />
+			<section name="common">
+				<attribute name="Specification-Title" value="${manifest.nice-name}" />
+				<attribute name="Specification-Version" value="${release.version}" />
+				<attribute name="Specification-Vendor" value="${manifest.vendor}" />
+				<attribute name="Implementation-Title" value="${ant.project.name}" />
+				<attribute name="Implementation-Version" value="${release.version} ${release.date}" />
+				<attribute name="Implementation-Vendor" value="${manifest.vendor}" />
+			</section>
+		</manifest>
+	</target>
+
+	<target name="compile.src" depends="init">
+		<pathconvert pathsep="${line.separator}|   |-- " property="echo.path.compile" refid="classpath" />
+		<echo message="|-- compile classpath"/>
+		<echo message="|   |"/>
+		<echo message="|   |-- ${echo.path.compile}"/>
+		<javac classpathref="classpath" debug="yes" destdir="${directories.out.tmp.classes}" srcdir="${directories.src}" source="1.6" target="1.6" />
+	</target>
+
+	<target name="compile.tests" depends="compile.src">
+		<javac classpathref="classpath-tests" debug="yes" destdir="${directories.out.tmp.classes-test}" srcdir="${directories.test}" source="1.6" target="1.6" />
+	</target>
+	
+	<target name="jar.prepare" depends="compile.src, manifest" />
+
+	<target name="jar" depends="jar.prepare">
+		<jar destfile="${directories.out.dist}/${ant.project.name}-${release.version}.jar" manifest="${files.out.manifest}">
+			<metainf dir="${directories.out.jar.meta-inf}" />
+			<fileset dir="${directories.out.tmp.classes}" />
+		</jar>
+	</target>
+
+    <target name="dist" depends="jar" description="Builds and packages the project." />
+
+    <target name="all" depends="dist" description="Builds the projects." />
+        	
+	<target name="doc" depends="init" description="Builds the javadoc.">
+		<javadoc access="private" author="yes" defaultexcludes="yes" destdir="${directories.out.javadoc}" doctitle="${manifest.nice-name}" failonerror="yes" packagenames="com.prodyna.skillmanagement.*" sourcepath="${directories.src}" use="yes" version="no" windowtitle="${manifest.nice-name}">
+			<classpath refid="classpath" />
+			<link offline="yes" href="${urls.java6api}" packagelistloc="build/jdk-packages/" />
+		</javadoc>
+	</target>
+</project>
