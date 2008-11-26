@@ -9,12 +9,13 @@ import com.sun.grizzly.http.SelectorThread;
 import com.sun.jersey.api.container.grizzly.GrizzlyWebContainerFactory;
 
 public class ServerLauncher {
+	public static final String SERVER_BASE_URI = "http://localhost:9998/helloworld/";
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		final String baseUri = "http://localhost:9998/helloworld/";
+		
 		final Map<String, String> initParams = new HashMap<String, String>();
 
 		initParams.put("com.sun.jersey.config.property.packages",
@@ -24,13 +25,13 @@ public class ServerLauncher {
 		System.out.println(ServiceResource.class.getPackage().getName());
 		SelectorThread threadSelector;
 		try {
-			threadSelector = GrizzlyWebContainerFactory.create(baseUri,
+			threadSelector = GrizzlyWebContainerFactory.create(SERVER_BASE_URI,
 					initParams);
 
 			System.out.println(String.format(
 					"Jersey app started with WADL available at %sapplication.wadl\n"
 							+ "Try out %shelloworld\nHit enter to stop it...",
-					baseUri, baseUri));
+					SERVER_BASE_URI, SERVER_BASE_URI));
 			System.in.read();
 			threadSelector.stopEndpoint();
 		} catch (IOException e) {
