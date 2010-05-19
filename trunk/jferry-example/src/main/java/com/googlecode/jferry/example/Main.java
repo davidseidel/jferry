@@ -20,5 +20,7 @@ public class Main {
 		person.setFirstName("John");
 		person.setLastName("Doe");
 		personService.addPerson(person);
+		
+		System.out.println(personService.lookupPerson("Doe"));
 	}
 }
