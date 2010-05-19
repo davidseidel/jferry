@@ -9,7 +9,7 @@ import com.sun.grizzly.http.SelectorThread;
 import com.sun.jersey.api.container.grizzly.GrizzlyWebContainerFactory;
 
 public class ServerLauncher {
-	public static final String SERVER_BASE_URI = "http://localhost:9998/helloworld/";
+	public static final String SERVER_BASE_URI = "http://localhost:9998/helloworld";
 
 	/**
 	 * @param args

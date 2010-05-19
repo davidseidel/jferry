@@ -2,35 +2,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.jferry</groupId>
-	<artifactId>jersey-testserver</artifactId>
+	<artifactId>jferry-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.2</version>
+			<groupId>com.googlecode.jferry</groupId>
+			<artifactId>jferry</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.grizzly</groupId>
-			<artifactId>grizzly-servlet-webserver</artifactId>
-			<version>1.9.18-i</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.0</version>
+			<groupId>com.googlecode.jferry</groupId>
+			<artifactId>jersey-testserver</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
