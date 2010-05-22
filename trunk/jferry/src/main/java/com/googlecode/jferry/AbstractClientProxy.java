@@ -29,7 +29,12 @@ public abstract class AbstractClientProxy implements ClientProxy {
 
 		// create processor input
 		MethodInvocationInput input = new MethodInvocationInput();
-		input.setArguments(args);
+		
+		if(args != null) {
+			input.setArguments(args);
+		} else {
+			input.setArguments(new Object[] {});
+		}
 		input.setContext(this.createInvocationContext());
 		input.setMethodMetadata(methodMetaData);
 		
