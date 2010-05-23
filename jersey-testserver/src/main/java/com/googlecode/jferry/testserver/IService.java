@@ -17,6 +17,10 @@ public interface IService {
 	@Path("person/{name}")
 	Person lookupPerson(@PathParam("name") String name);
 	
+	@Produces("text/xml")
+	@GET
+	@Path("persons")
+	PersonList listPersons();
 
 	@Produces("text/xml")
 	@DELETE
@@ -28,6 +32,12 @@ public interface IService {
 	@POST
 	@Path("person")
 	void addPerson(Person person);
+	
+	@Consumes("application/json")
+	@Produces("application/json")
+	@POST
+	@Path("person")
+	Person addPersonJson(Person person);
 	
 	@Consumes("text/xml")
 	@Produces("text/xml")

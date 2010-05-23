@@ -19,8 +19,12 @@ public class Main {
 		Person person = new Person();
 		person.setFirstName("John");
 		person.setLastName("Doe");
-		personService.addPerson(person);
+		Person jsonPerson = personService.addPersonJson(person);
+		System.out.println(jsonPerson);
 		
 		System.out.println(personService.lookupPerson("Doe"));
+		
+		System.out.println(personService.listPersons().getPersons());
+		
 	}
 }

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.googlecode.jferry.testserver.IService;
 import com.googlecode.jferry.testserver.Person;
+import com.googlecode.jferry.testserver.PersonList;
 
 
 @Path("/")
@@ -74,5 +75,18 @@ public class ServiceResource implements IService {
 				logger.info("deleted person" + person);		
 			}
 		}
+	}
+
+	@Override
+	public PersonList listPersons() {
+		PersonList personList = new PersonList();
+		personList.setPersons(persons);
+		return personList;
+	}
+
+	@Override
+	public Person addPersonJson(Person person) {
+		this.addPerson(person);
+		return person;
 	}
 }
