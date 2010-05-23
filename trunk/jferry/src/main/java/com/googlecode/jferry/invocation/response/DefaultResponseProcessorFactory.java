@@ -14,6 +14,7 @@ public class DefaultResponseProcessorFactory implements
 		responseProcessors = new HashSet<IResponseProcessor>();
 		responseProcessors.add(new TextXmlResponseProcessor());
 		responseProcessors.add(new TextPlainResponseProcessor());
+		responseProcessors.add(new JsonResponseProcessor());
 	}
 
 	@Override

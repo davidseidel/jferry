@@ -56,12 +56,13 @@ public class AnnotationBasedMethodMetadataFactory extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<MethodParameterMetadata> createParameterList(Method method) {
+	protected List<MethodParameterMetadata> createParameterList(Method method) throws MetadataCreationException {
 		List<MethodParameterMetadata> parameters = new ArrayList<MethodParameterMetadata>();
 
 		int paramCount = method.getParameterTypes().length;
-
+		
 		if (paramCount > 0) {
+			boolean foundEntityParameter = false;
 			Class<?>[] paramTypes = method.getParameterTypes();
 			Annotation[][] paramsAnnotations = method.getParameterAnnotations();
 			for(int paramCounter = 0; paramCounter < paramCount; paramCounter++) {
@@ -90,7 +91,12 @@ public class AnnotationBasedMethodMetadataFactory extends
 				}
 				
 				if(!foundParameterAnnotation) {
-					parameterMetadata.setEntityParameter(true);
+					if(!foundEntityParameter) {
+						parameterMetadata.setEntityParameter(true);
+						foundEntityParameter = true;
+					} else {
+						throw new MetadataCreationException("Found more than 2 Entity Parameters! This is not allowed according to the JAX-RS Spec.");
+					}
 				}
 				
 				parameters.add(parameterMetadata);

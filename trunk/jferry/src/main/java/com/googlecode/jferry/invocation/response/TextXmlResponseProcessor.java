@@ -8,8 +8,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+/**
+ * Processor to convert XML serialized objects to Java Beans by using JAXB.
+ * 
+ * @author David Seidel &lt;seidel.david@googlemail.com&gt;
+ * 
+ */
 public class TextXmlResponseProcessor implements IResponseProcessor {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean canProcess(MimeType type) {
 
@@ -21,6 +30,9 @@ public class TextXmlResponseProcessor implements IResponseProcessor {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Object process(Class<?> type, String responseString) {
 		Object returnValue = null;
