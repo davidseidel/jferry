@@ -12,12 +12,12 @@ public abstract class AbstractMethodMetadataFactory implements IMethodMetadataFa
 	
 	protected abstract RequestType lookupRequestType(Method method);
 	
-	protected abstract List<MethodParameterMetadata> createParameterList(Method method);
+	protected abstract List<MethodParameterMetadata> createParameterList(Method method) throws MetadataCreationException;
 	
 	protected abstract MimeType lookupConsumedMimeType(Method method);
 	
 	@Override
-	public MethodMetadata create(Method method) {
+	public MethodMetadata create(Method method) throws MetadataCreationException {
 		MethodMetadata metaData = new MethodMetadata();
 		
 		// get request type

@@ -12,6 +12,7 @@ public class DefaultRequestBodyConverterFactory implements IRequestBodyConverter
 	public DefaultRequestBodyConverterFactory() {
 		this.requestBodyConverters = new ArrayList<IRequestBodyConverter>();
 		this.requestBodyConverters.add(new XmlRequestBodyConverter());
+		this.requestBodyConverters.add(new JsonRequestBodyConverter());
 		
 	}
 	

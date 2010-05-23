@@ -11,7 +11,7 @@ public class PathProcessor {
 
 	public static String convertValue(Object value) {
 		String convertedValue = null;
-		if (!(value instanceof Collection)) {
+		if (!(value instanceof Collection<?>)) {
 			convertedValue = String.valueOf(value);
 		} else {
 			// TODO: implement for collections

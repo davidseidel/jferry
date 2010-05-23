@@ -29,12 +29,14 @@ public class AnnotationBasedInterfaceMetadataFactory extends AbstractInterfaceMe
 		List<MethodMetadata> methodMetadata = new ArrayList<MethodMetadata>();
 		
 		for(Method method : methods) {
-			MethodMetadata metaData = new AnnotationBasedMethodMetadataFactory().create(method);
-			methodMetadata.add(metaData);
+			try {
+				MethodMetadata metaData = new AnnotationBasedMethodMetadataFactory().create(method);
+				methodMetadata.add(metaData);
+			} catch (Exception e) {
+				throw new IllegalStateException(e.getMessage(), e);
+			}
 		}
-		
 		return methodMetadata;
-		
 	}
 	
 	
