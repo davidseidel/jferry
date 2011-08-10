@@ -12,8 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
-public class AnnotationBasedMethodMetadataFactory extends
-		AbstractMethodMetadataFactory {
+public class AnnotationBasedMethodMetadataFactory extends AbstractMethodMetadataFactory {
 
 	/**
 	 * {@inheritDoc}
@@ -28,8 +27,7 @@ public class AnnotationBasedMethodMetadataFactory extends
 		for (Annotation annotation : methodAnnotations) {
 			Class<? extends Annotation> annotationClass = annotation.annotationType();
 			for (RequestType requestTypeToTest : requestTypesToTest) {
-				if (requestTypeToTest
-						.testAnnotationOfRequestType(annotationClass)) {
+				if (requestTypeToTest.testAnnotationOfRequestType(annotationClass)) {
 					requestTypeToReturn = requestTypeToTest;
 					break;
 				}
@@ -60,45 +58,47 @@ public class AnnotationBasedMethodMetadataFactory extends
 		List<MethodParameterMetadata> parameters = new ArrayList<MethodParameterMetadata>();
 
 		int paramCount = method.getParameterTypes().length;
-		
+
 		if (paramCount > 0) {
 			boolean foundEntityParameter = false;
 			Class<?>[] paramTypes = method.getParameterTypes();
 			Annotation[][] paramsAnnotations = method.getParameterAnnotations();
-			for(int paramCounter = 0; paramCounter < paramCount; paramCounter++) {
+			for (int paramCounter = 0; paramCounter < paramCount; paramCounter++) {
 				MethodParameterMetadata parameterMetadata = new MethodParameterMetadata();
-				
+
 				// extract type
 				Class<?> type = paramTypes[paramCounter];
 				parameterMetadata.setType(type);
-				
+
 				// extract annotations
 				Annotation[] paramAnnotations = paramsAnnotations[paramCounter];
 				boolean foundParameterAnnotation = false;
-				for(Annotation paramAnnotation : paramAnnotations) {
-					
-					if(paramAnnotation.annotationType().equals(QueryParam.class)) {
+				for (Annotation paramAnnotation : paramAnnotations) {
+
+					if (paramAnnotation.annotationType().equals(QueryParam.class)) {
 						String paramName = ((QueryParam) paramAnnotation).value();
 						parameterMetadata.setQueryParameterName(paramName);
-						parameterMetadata.setQueryParameter(true);			
-					} else if(paramAnnotation.annotationType().equals(PathParam.class)) {
+						parameterMetadata.setQueryParameter(true);
+						foundParameterAnnotation = true;
+					} else if (paramAnnotation.annotationType().equals(PathParam.class)) {
 						String paramName = ((PathParam) paramAnnotation).value();
 						parameterMetadata.setPathParameterName(paramName);
 						parameterMetadata.setPathParameter(true);
+						foundParameterAnnotation = true;
 					} else {
-						
+
 					}
 				}
-				
-				if(!foundParameterAnnotation) {
-					if(!foundEntityParameter) {
+
+				if (!foundParameterAnnotation) {
+					if (!foundEntityParameter) {
 						parameterMetadata.setEntityParameter(true);
 						foundEntityParameter = true;
 					} else {
 						throw new MetadataCreationException("Found more than 2 Entity Parameters! This is not allowed according to the JAX-RS Spec.");
 					}
 				}
-				
+
 				parameters.add(parameterMetadata);
 			}
 		}
@@ -112,13 +112,13 @@ public class AnnotationBasedMethodMetadataFactory extends
 	protected MimeType lookupConsumedMimeType(Method method) {
 		MimeType mimeTypeToReturn = null;
 		final Annotation[] methodAnnotations = method.getAnnotations();
-		
+
 		for (Annotation annotation : methodAnnotations) {
 			Class<? extends Annotation> annotationClass = annotation.annotationType();
-			if(annotationClass.equals(Consumes.class)) {
+			if (annotationClass.equals(Consumes.class)) {
 				// TODO: add support for multiple mime types
 				String[] consumes = ((Consumes) annotation).value();
-				if(consumes.length > 0) {
+				if (consumes.length > 0) {
 					String mimeTypeString = consumes[0];
 					try {
 						mimeTypeToReturn = new MimeType(mimeTypeString);
@@ -127,9 +127,9 @@ public class AnnotationBasedMethodMetadataFactory extends
 					}
 				}
 			}
-			
+
 		}
-		
+
 		return mimeTypeToReturn;
 	}
 }

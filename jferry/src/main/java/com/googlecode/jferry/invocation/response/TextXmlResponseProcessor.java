@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import javax.activation.MimeType;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -22,8 +23,7 @@ public class TextXmlResponseProcessor implements IResponseProcessor {
 	@Override
 	public boolean canProcess(MimeType type) {
 
-		if (type != null && type.getPrimaryType().equals("text")
-				&& type.getSubType().equals("xml")) {
+		if (MediaType.APPLICATION_XML.equals(type.toString()) || MediaType.TEXT_XML.equals(type.toString())) {
 			return true;
 		}
 		return false;
