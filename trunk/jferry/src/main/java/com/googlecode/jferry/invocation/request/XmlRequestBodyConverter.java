@@ -16,8 +16,8 @@ public class XmlRequestBodyConverter implements IRequestBodyConverter {
 
 	@Override
 	public boolean canConvert(MimeType type) {
-		if (type != null && type.getPrimaryType().equals("text")
-				&& type.getSubType().equals("xml")) {
+		String primaryType = type.getPrimaryType();
+		if (type != null && (primaryType.equals("text") || primaryType.equals("application")) && type.getSubType().equals("xml")) {
 			return true;
 		}
 		return false;
@@ -29,19 +29,17 @@ public class XmlRequestBodyConverter implements IRequestBodyConverter {
 
 		MethodMetadata methodMetadata = input.getMethodMetadata();
 
-		List<MethodParameterMetadata> parameters = methodMetadata
-				.getParameters();
+		List<MethodParameterMetadata> parameters = methodMetadata.getParameters();
 		Object arguments[] = input.getArguments();
 
 		for (int paramCounter = 0; paramCounter < parameters.size(); paramCounter++) {
-			MethodParameterMetadata parameterMetadata = parameters
-					.get(paramCounter);
+			MethodParameterMetadata parameterMetadata = parameters.get(paramCounter);
 			if (parameterMetadata.isEntityParameter()) {
-				
+
 				Class<?> type = parameterMetadata.getType();
 				Object argumentToMarshal = arguments[paramCounter];
-				if(!isBasicJavaType(type)) {
-	 				try {
+				if (!isBasicJavaType(type)) {
+					try {
 						JAXBContext ctx = JAXBContext.newInstance(type);
 						Marshaller marshaller = ctx.createMarshaller();
 						StringWriter writer = new StringWriter();
@@ -51,7 +49,7 @@ public class XmlRequestBodyConverter implements IRequestBodyConverter {
 						throw new IllegalStateException(e);
 					}
 				} else {
-					result = argumentToMarshal.toString(); 
+					result = argumentToMarshal.toString();
 				}
 				break;
 			}
@@ -59,9 +57,9 @@ public class XmlRequestBodyConverter implements IRequestBodyConverter {
 
 		return result;
 	}
-	
+
 	private boolean isBasicJavaType(Class<?> type) {
-		if(type.getName().startsWith("java.lang.")) {
+		if (type.getName().startsWith("java.lang.")) {
 			return true;
 		}
 		return false;
