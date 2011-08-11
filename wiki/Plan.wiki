@@ -1,2 +1,2 @@
-Next Steps:
-* Use jersey client libs instead of plain common http client
+TODO:
+ * Use jersey client libs instead of plain common http client
