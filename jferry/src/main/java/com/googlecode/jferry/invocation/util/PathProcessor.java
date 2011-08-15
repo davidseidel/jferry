@@ -15,8 +15,7 @@ public class PathProcessor {
 			convertedValue = String.valueOf(value);
 		} else {
 			// TODO: implement for collections
-			throw new IllegalStateException(
-					"Collections currently not supported");
+			throw new IllegalStateException("Collections currently not supported");
 		}
 		return convertedValue;
 	}
@@ -33,12 +32,10 @@ public class PathProcessor {
 			throw new IllegalStateException("path is null!");
 		}
 		StringBuffer processedPathTemplate = new StringBuffer(pathTemplate);
-		List<MethodParameterMetadata> parameters = methodMetadata
-				.getParameters();
+		List<MethodParameterMetadata> parameters = methodMetadata.getParameters();
 
 		if (methodMetadata.getParameters() == null) {
-			throw new IllegalStateException(
-					"list of method parameters is null!");
+			throw new IllegalStateException("list of method parameters is null!");
 		}
 
 		if (input.getArguments() == null) {
@@ -47,31 +44,37 @@ public class PathProcessor {
 		Object[] arguments = input.getArguments();
 		int paramCount = parameters.size();
 		if (paramCount != arguments.length) {
-			throw new IllegalStateException(
-					"count of parameters is not equal to the counter of arguments!");
+			throw new IllegalStateException("count of parameters is not equal to the counter of arguments!");
 		}
+
+		boolean questionMarkAdded = false;
 
 		for (int paramCounter = 0; paramCounter < paramCount; paramCounter++) {
 			MethodParameterMetadata parameter = parameters.get(paramCounter);
+			Object argument = arguments[paramCounter];
 
 			if (parameter.isPathParameter()) {
-				Object argument = arguments[paramCounter];
 
-				if (parameter.getPathParameterName() == null
-						|| parameter.getPathParameterName().length() == 0) {
+				if (parameter.getPathParameterName() == null || parameter.getPathParameterName().length() == 0) {
 					continue;
 				}
 
-				int index = processedPathTemplate.indexOf("{"
-						+ parameter.getPathParameterName() + "}");
+				int index = processedPathTemplate.indexOf("{" + parameter.getPathParameterName() + "}");
 				if (index != -1) {
-					int pathParamNameLength = parameter
-							.getPathParameterName().length();
+					int pathParamNameLength = parameter.getPathParameterName().length();
 
 					processedPathTemplate.delete(index, index + pathParamNameLength + 2);
-					
+
 					processedPathTemplate.insert(index, argument);
 				}
+			} else if (parameter.isQueryParameter()) {
+				if (questionMarkAdded == true) {
+					processedPathTemplate.append("&");
+				} else {
+					processedPathTemplate.append("?");
+					questionMarkAdded = true;
+				}
+				processedPathTemplate.append(parameter.getQueryParameterName()).append("=").append(argument);
 			}
 		}
 		return processedPathTemplate.toString();
