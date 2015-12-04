@@ -1,0 +1,2 @@
+TODO:
+  * Use jersey client libs instead of plain common http client

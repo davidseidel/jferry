@@ -1,0 +1,12 @@
+# This tutorial gives you a quick introduction of developing WebServices with JAX-RS and jferry.
+
+# Introduction #
+Required tools:
+  * Eclipse (3.5)
+  * m2eclipse-Plug-In (for Maven support)
+  * subclipse-Plug-In (to checkout sources)
+
+
+# Step-By-Step #
+
+1. Checkout the jferry-core project from: http://jferry.googlecode.com/svn/trunk/
